@@ -1,0 +1,15 @@
+mox:
+  gateway:
+    security:
+      jwt:
+        secret: 0ddf5597e02d981f8803c4cc11f015a4e52679d706edb29b595d9e466def5bcf95273a3053ab5d97ee893c23e4023b912daefaade316406a33b7685d4d223dfa
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: fileservices_route
+        uri: http://10.7.112.121:8000
+        predicates:
+        - Path=/fileservices/**
+        filters:
+        - StripPrefix=1

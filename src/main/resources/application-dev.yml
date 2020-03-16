@@ -1,0 +1,35 @@
+muyie:
+  gateway:
+    hystrix-commands:
+      fallbackcmd:
+        timeout-in-milliseconds: 5000
+    security:
+      jwt:
+        secret: 612cb099d4eafae035a9d3dd73768a2191f74e765a5f1f5741c90a24a41ae96b7e38c71099e034534c0ac46a2bdf604f809e0b67c7e7c988526034f7ca818cf3
+        base64-secret: NjEyY2IwOTlkNGVhZmFlMDM1YTlkM2RkNzM3NjhhMjE5MWY3NGU3NjVhNWYxZjU3NDFjOTBhMjRhNDFhZTk2YjdlMzhjNzEwOTllMDM0NTM0YzBhYzQ2YTJiZGY2MDRmODA5ZTBiNjdjN2U3Yzk4ODUyNjAzNGY3Y2E4MThjZjM=
+        token-validity-in-seconds: 1800
+        token-validity-in-seconds-for-remember-me: 2592000
+spring:
+  cloud:
+    gateway:
+      routes:
+      - id: fileservices_route
+        uri: http://10.7.112.121:8000
+        predicates: 
+        - Path=/fileservices/**
+        filters:
+        - StripPrefix=1
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/fallback
+      - id: path_route
+        uri: http://httpbin.org
+        predicates:
+        - Path=/get
+        filters:
+        - Authorize=true
+        - name: Hystrix
+          args:
+            name: fallbackcmd
+            fallbackUri: forward:/fallback

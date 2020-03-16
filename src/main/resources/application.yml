@@ -1,0 +1,13 @@
+hystrix.command.fallbackcmd.execution.isolation.thread.timeoutInMilliseconds: ${muyie.gateway.hystrix-commands.fallbackcmd.timeout-in-milliseconds:5000}
+server:
+  port: 9500
+  compression:
+    enabled: true
+  error:
+    whitelabel:
+      enabled: false
+spring:
+  application:
+    name: muyie-gateway
+  profiles:
+    active: dev
